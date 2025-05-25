@@ -1,0 +1,55 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Mengaktifkan mod_rewrite
+# ─────────────────────────────────────────────────────────────────────────────
+RewriteEngine On
+RewriteBase /
+# ─────────────────────────────────────────────────────────────────────────────
+# Redirect akses awal (/) ke /dashboard-first
+RewriteCond %{REQUEST_URI} ^/$ [NC]
+RewriteCond %{REQUEST_URI} !^/security-settings/handle-logout$ [NC]  # Jangan redirect jika akses logout
+# RewriteRule ^$ /dashboard-first.php [L,QSA]
+# ─────────────────────────────────────────────────────────────────────────────
+# Redirect "apapun.php" jadi URL yang bersih.
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.php[?\s] [NC]
+RewriteRule ^ /%1 [R=301,L]
+# ─────────────────────────────────────────────────────────────────────────────
+# Hapus parameter ?i=1 dari URL
+RewriteCond %{QUERY_STRING} ^i=1$
+RewriteRule ^(.*)$ /$1? [R=301,L]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jika ada file atau direktori fisik, jangan rewrite
+# ─────────────────────────────────────────────────────────────────────────────
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Jika menambahkan/terdapat ".php" menghasilkan file yang valid
+RewriteCond %{DOCUMENT_ROOT}/$1.php -f
+RewriteRule ^(.+?)/?$ $1.php [L,QSA]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Mengarahkan ke 'dashboard-first'
+
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Ubah semua yang mengandung "dashboard-*" menjadi hanya "dashboard"
+# Contoh: "dashboard-user", "dashboard-admin", "dashboard-apalah" jadi "dashboard"
+# ─────────────────────────────────────────────────────────────────────────────
+#RewriteCond %{REQUEST_URI} ^/dashboard-[^/]+ [NC]
+#RewriteRule ^dashboard-([^/]+)$ /dashboard/$1 [R=301,L]
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Semua yang lain, akan menerus ke 'index.php'
+# Sertakan path asli sebagai parameter "url"
+# ─────────────────────────────────────────────────────────────────────────────
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
+# ─────────────────────────────────────────────────────────────────────────────
+php_value display_errors On
+php_value date.timezone Asia/Jakarta
