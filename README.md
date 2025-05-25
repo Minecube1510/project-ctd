@@ -1,5 +1,12 @@
+---
 # Tentang Project
+Hanya berisi Project CTD.
 
-Hanya berisi project CTD...
+> Yakni Project yang bernama 'Custom Translator Dictionary'.
 
-Yakni 'Custom Translator Dictionary'
+---
+**Made by**:
+- Aditya Rahman
+- Rizka Ibrahim
+
+---
